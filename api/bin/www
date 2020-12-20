@@ -9,7 +9,6 @@ var app = require('../app');
 var debug = require('debug')('api:server');
 var http = require('http');
 const socketIO = require("socket.io");
-const { isObject } = require('util');
 const controller = require("../controllers/symbolController");
 
 /**
@@ -25,7 +24,7 @@ app.set('port', port);
 
 
 /**
- * Connect Websocket to server, sending emit every 10 seconds.
+ * Connect Websocket to server
  */
 var server = http.createServer(app);
 
@@ -42,10 +41,12 @@ io.on("connection", socket => {
   })
 
   socket.on("update", () => {
+    console.log("Update requested...")
     controller.symbol_list(socket);
   })
 
   socket.on("deleteTicker", name => {
+    console.log("Delete ticker...")
     controller.symbol_delete(socket, name);
   })
 })
